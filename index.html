@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1996.1.1.이전 발령자 연금 시점일 계산기</title>
+    <title>연금 시점일 계산기 (1996.1.1. 이전 발령자)</title>
     <style>
         body {
             font-family: 'Malgun Gothic', sans-serif;
@@ -30,10 +30,20 @@
         }
         h1 {
             color: #005a9c;
+            padding-bottom: 5px;
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 0;
+        }
+        .subtitle {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
             border-bottom: 2px solid #005a9c;
             padding-bottom: 10px;
-            text-align: center;
-            font-size: 24px;
         }
         h2 {
             color: #333;
@@ -49,13 +59,39 @@
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px 20px; /* 세로 간격, 가로 간격 */
+            gap: 20px; 
         }
         .form-group {
-            margin-bottom: 5px; /* 그리드 사용으로 mb 축소 */
+            margin-bottom: 15px;
+        }
+        .form-group:last-child {
+            margin-bottom: 0;
         }
         .full-width {
-            grid-column: 1 / -1; /* D (발령일)은 한 줄 전체 사용 */
+            grid-column: 1 / -1; 
+        }
+        .input-group-wrapper {
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        #include-group {
+            background-color: #f0f7ff;
+            border-color: #b3d7ff;
+        }
+        #exclude-group {
+            background-color: #fff8f0;
+            border-color: #ffe0b3;
+        }
+        .group-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 17px;
+            color: #333;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            font-weight: bold;
         }
         label {
             display: block;
@@ -101,25 +137,29 @@
             border-radius: 5px;
             text-align: center;
         }
-        #calculation-steps {
+        
+        /* [수정] #calculation-steps를 클래스로 변경 */
+        .calculation-box {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             padding: 20px;
             border-radius: 5px;
-            margin-top: 20px;
+            margin-top: 20px; /* 박스 간의 간격 */
             font-family: 'Consolas', 'Courier New', monospace;
             line-height: 1.8;
             font-size: 15px;
-            display: none; 
+            display: none; /* JS로 보이게 처리 */
         }
-        #calculation-steps p,
-        #calculation-steps ul {
+        .calculation-box p,
+        .calculation-box ul {
             margin: 10px 0;
         }
-        #calculation-steps ul {
+        .calculation-box ul {
             padding-left: 20px;
             list-style-type: disc;
         }
+        /* [수정] 끝 */
+        
         hr {
             border: 0;
             border-top: 1px dashed #ccc;
@@ -142,43 +182,55 @@
 <body>
 
     <div class="container">
-        <h1>1996.1.1.이전 발령자 연금 시점일 계산기</h1>
+        
+        <h1>연금 시점일 계산기</h1>
+        <p class="subtitle">1996.1.1. 이전 발령자</p>
 
-        <div class="form-group full-width">
-            <label for="startDate">발령일 D:</label>
+        <div class="form-group full-width" style="margin-bottom: 20px;">
+            <label for="startDate">D (발령일):</label>
             <input type="date" id="startDate" value="1995-09-01">
         </div>
         
         <div class="form-grid">
-            <div class="form-group">
-                <label for="b1_months">재직(연금) 포함 개월수 B1 (2000.12.31.까지)</label>
-                <input type="number" id="b1_months" value="28">
+            
+            <div class="input-group-wrapper" id="include-group">
+                <h3 class="group-title">B (재직 포함)</h3>
+                <div class="form-group">
+                    <label for="b1_months">B1 (2000.12.31.까지)</label>
+                    <input type="number" id="b1_months" value="28">
+                </div>
+                <div class="form-group">
+                    <label for="b2_months">B2 (2001.1.1.부터)</label>
+                    <input type="number" id="b2_months" value="0">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="c1_months">재직(연금) 제외 개월수 C1 (2000.12.31.까지)</label>
-                <input type="number" id="c1_months" value="0">
+            <div class="input-group-wrapper" id="exclude-group">
+                <h3 class="group-title">C (재직 제외)</h3>
+                <div class="form-group">
+                    <label for="c1_months">C1 (2000.12.31.까지)</label>
+                    <input type="number" id="c1_months" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="c2_months">C2 (2001.1.1.부터)</label>
+                    <input type="number" id="c2_months" value="0">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="b2_months">재직(연금) 포함 개월수 B2 (2001.1.1.부터)</label>
-                <input type="number" id="b2_months" value="0">
-            </div>
-
-            <div class="form-group">
-                <label for="c2_months">재직(연금) 제외 개월수 C2 (2001.1.1.부터)</label>
-                <input type="number" id="c2_months" value="0">
-            </div>
         </div>
         
         <button onclick="calculatePensionDate()" class="full-width">계산하기</button>
 
         <div id="result-container">
             <h2>계산 결과</h2>
+            
             <p id="finalResult" class="final-result" style="display:none;"></p>
-            <div id="calculation-steps"></div>
+            
+            <div id="formula-explanation" class="calculation-box"></div>
+            
+            <div id="detailed-steps" class="calculation-box"></div>
         </div>
-    </div>
+        </div>
 
     <div class="footer">
         @작성자: LeeJaeKyun 2025.10.27.
@@ -187,7 +239,7 @@
     <script>
         function calculatePensionDate() {
             try {
-                // 1. 입력 값 가져오기 (새로운 변수명 적용)
+                // 1. 입력 값 가져오기
                 const d_date_str = document.getElementById('startDate').value;
                 const b1_months = parseInt(document.getElementById('b1_months').value) || 0;
                 const c1_months = parseInt(document.getElementById('c1_months').value) || 0;
@@ -208,11 +260,9 @@
                 const diff_months = (ref_year - d_year) * 12 + (ref_month - d_month) + 1;
 
                 // 3. A (이전 개월수) 최종 계산
-                // A = (2000.12.31-D) + B1 - C1
                 const A_months = diff_months + b1_months - c1_months;
 
                 // 4. 추가할 총 개월 수 계산
-                // ((20년×12개월) - (A + B2 - C2)) × 2
                 const base_months = 240; // 20 * 12
                 const inner_calc = A_months + b2_months - c2_months;
                 const total_months_to_add = (base_months - inner_calc) * 2;
@@ -231,25 +281,30 @@
                 const years_to_add = Math.floor(total_months_to_add / 12);
                 const months_to_add = total_months_to_add % 12;
 
-                // 7. 결과 표시
+                // 7. 결과 표시 (최종 날짜)
                 document.getElementById('finalResult').innerText = `최종 연금시점일: ${final_date_str}`;
                 document.getElementById('finalResult').style.display = 'block';
 
-                // 8. 계산 과정 표시 (새로운 공식 반영)
-                const stepsHtml = `
+                // [수정] 8. 계산 과정 분리
+                
+                // 8-1. 계산 공식 설명
+                const formulaHtml = `
                     <h3 style="margin-top:0; color:#005a9c;">■ 계산 공식 설명</h3>
                     <p style="font-weight:bold;">1. A (이전 개월수) 계산</p>
                     <p style="margin-left: 10px;">A = (2000.12.31. - D) + B1 - C1</p>
                     <p style="font-weight:bold; margin-top:10px;">2. 연금시점일 계산</p>
                     <p style="margin-left: 10px;">☆시점일 = 2001.1.1. + ((240) - (A + B2 - C2)) × 2 (개월)</p>
-                    
-                    <hr class="main-divider">
+                `;
+                document.getElementById('formula-explanation').innerHTML = formulaHtml;
+                document.getElementById('formula-explanation').style.display = 'block';
 
-                    <h3 style="color:#005a9c;">■ 상세 계산 과정</h3>
+                // 8-2. 상세 계산 과정
+                const detailedStepsHtml = `
+                    <h3 style="margin-top:0; color:#005a9c;">■ 상세 계산 과정</h3>
                     <p><strong>(2000.12.31 - D):</strong><br>
                     ${d_date_str} ~ 2000.12.31. = <strong>${diff_months}개월</strong></p>
-                    <p><strong>재직(연금) 포함 개월수 B1 (2000.12.31.까지):</strong> ${b1_months}개월</p>
-                    <p><strong>재직(연금) 제외 개월수 C1 (2000.12.31.까지):</strong> ${c1_months}개월</p>
+                    <p><strong>B1 (2000.12.31.까지 포함):</strong> ${b1_months}개월</p>
+                    <p><strong>C1 (2000.12.31.까지 제외):</strong> ${c1_months}개월</p>
                     <p style="font-weight:bold; color: #005a9c;">A (이전 개월수) = ${diff_months} + ${b1_months} - ${c1_months} = <strong>${A_months}개월</strong></sppan></p>
                     <hr>
                     <p><strong>B2 (2001.1.1.부터 포함):</strong> ${b2_months}개월</p>
@@ -264,15 +319,13 @@
                     <p>2001년 1월 1일 + ${total_months_to_add}개월 (${years_to_add}년 ${months_to_add}개월)</p>
                     <p><strong>= ${final_date_str}</strong></p>
                 `;
-                document.getElementById('calculation-steps').innerHTML = stepsHtml;
-                document.getElementById('calculation-steps').style.display = 'block';
+                document.getElementById('detailed-steps').innerHTML = detailedStepsHtml;
+                document.getElementById('detailed-steps').style.display = 'block';
 
             } catch (e) {
                 alert("계산 중 오류가 발생했습니다: " + e.message);
             }
         }
-
-        // 페이지 로드 시, 대화에서 나눈 값(기본값)으로 즉시 계산 실행
         window.onload = calculatePensionDate;
     </script>
 
