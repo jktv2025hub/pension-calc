@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<www.InfoPickLab.com>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>연금 시점일 계산기 (1996.1.1. 이전 발령자)</title>
+    <title>교사 연금 수령 시점일 계산기 (정년비교)</title>
     <style>
         body {
             font-family: 'Malgun Gothic', sans-serif;
@@ -28,6 +28,35 @@
             border: 1px solid #e9ecef;
             margin-bottom: 20px;
         }
+
+        /* 공무원연금법 일반 설명 박스 */
+        .general-explanation {
+            background-color: #f0f7ff;
+            border: 1px solid #b3d7ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        .general-explanation h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #005a9c;
+            border-bottom: 1px solid #005a9c;
+            padding-bottom: 8px;
+        }
+        .general-explanation h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .general-explanation ul {
+            padding-left: 20px;
+            list-style-type: disc;
+            margin: 10px 0;
+        }
+        
         h1 {
             color: #005a9c;
             padding-bottom: 5px;
@@ -51,11 +80,7 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 8px;
         }
-        h3 {
-            color: #333;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
+        
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -64,12 +89,10 @@
         .form-group {
             margin-bottom: 15px;
         }
-        .form-group:last-child {
-            margin-bottom: 0;
-        }
         .full-width {
             grid-column: 1 / -1; 
         }
+        
         .input-group-wrapper {
             padding: 20px;
             border-radius: 8px;
@@ -83,6 +106,14 @@
             background-color: #fff8f0;
             border-color: #ffe0b3;
         }
+        #common-inputs {
+            background-color: #fffbe6; /* 연한 노란색 */
+            border: 1px solid #ffe58f;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
         .group-title {
             margin-top: 0;
             margin-bottom: 15px;
@@ -93,6 +124,7 @@
             padding-bottom: 10px;
             font-weight: bold;
         }
+        
         label {
             display: block;
             margin-bottom: 8px;
@@ -108,6 +140,7 @@
             border-radius: 5px;
             font-size: 16px;
         }
+        
         button {
             background-color: #005a9c;
             color: white;
@@ -119,11 +152,12 @@
             width: 100%;
             font-weight: bold;
             transition: background-color 0.3s ease;
-            margin-top: 10px;
+            margin-top: 20px;
         }
         button:hover {
             background-color: #004a80;
         }
+        
         #result-container {
             margin-top: 25px;
         }
@@ -137,39 +171,32 @@
             border-radius: 5px;
             text-align: center;
         }
+        /* 정년 비교 박스 */
+        .retirement-info {
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
         
-        /* [수정] #calculation-steps를 클래스로 변경 */
         .calculation-box {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             padding: 20px;
             border-radius: 5px;
-            margin-top: 20px; /* 박스 간의 간격 */
+            margin-top: 20px;
             font-family: 'Consolas', 'Courier New', monospace;
             line-height: 1.8;
             font-size: 15px;
-            display: none; /* JS로 보이게 처리 */
+            display: none;
         }
-        .calculation-box p,
-        .calculation-box ul {
-            margin: 10px 0;
-        }
-        .calculation-box ul {
-            padding-left: 20px;
-            list-style-type: disc;
-        }
-        /* [수정] 끝 */
-        
         hr {
             border: 0;
             border-top: 1px dashed #ccc;
             margin: 15px 0;
-        }
-        .main-divider {
-            border: 0;
-            border-top: 2px solid #005a9c;
-            margin: 25px 0;
-            opacity: 0.5;
         }
         .footer {
             text-align: center;
@@ -182,151 +209,290 @@
 <body>
 
     <div class="container">
-        
-        <h1>연금 시점일 계산기</h1>
-        <p class="subtitle">1996.1.1. 이전 발령자</p>
 
-        <div class="form-group full-width" style="margin-bottom: 20px;">
-            <label for="startDate">D (발령일):</label>
-            <input type="date" id="startDate" value="1995-09-01">
+        <div class="general-explanation">
+            <h2>🏫 공무원연금법상 '연금시점일' 정리</h2>
+            <p>이 계산기는 <strong>생년월일</strong>을 기준으로 <strong>교사 정년(만 62세)</strong>을 자동으로 계산하여 연금 수령 시점과 비교해 드립니다.</p>
+            
+            <h3>1. 1996년 1월 1일 이전 임용자</h3>
+            <ul>
+                <li><strong>특징:</strong> 정년(62세) 이전에 연금 지급 요건이 충족되는지 확인할 수 있습니다.</li>
+                <li><strong>적용:</strong> 'x2 공식'을 통해 계산된 날짜가 정년퇴직일보다 빠른지 확인합니다.</li>
+            </ul>
+
+            <h3>2. 1996년 1월 1일 이후 임용자</h3>
+            <ul>
+                <li><strong>특징:</strong> 정년(62세) 퇴직 후 연금을 받을 때까지의 <strong>'소득 공백 기간'</strong>을 확인해야 합니다.</li>
+                <li><strong>적용:</strong> 퇴직연도에 따라 만 60~65세 개시 연령이 결정됩니다.</li>
+            </ul>
+        </div>
+
+        <h1>교사 연금 시점일 계산기</h1>
+        <p class="subtitle" id="subtitle-text">1996.1.1. 이전 발령자</p>
+
+        <!-- [NEW] 공통 입력란: 발령일 + 생년월일 -->
+        <div id="common-inputs">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="startDate">D (발령일):</label>
+                    <input type="date" id="startDate" value="1995-09-01" onchange="checkCalculatorMode()">
+                </div>
+                <div class="form-group">
+                    <label for="birthDate">본인 생년월일:</label>
+                    <input type="date" id="birthDate" value="1970-01-01">
+                </div>
+            </div>
         </div>
         
-        <div class="form-grid">
-            
-            <div class="input-group-wrapper" id="include-group">
-                <h3 class="group-title">B (재직 포함)</h3>
-                <div class="form-group">
-                    <label for="b1_months">B1 (2000.12.31.까지)</label>
-                    <input type="number" id="b1_months" value="28">
+        <!-- 1996.1.1 이전 발령자용 입력 (Legacy) -->
+        <div id="legacy-inputs">
+            <div class="form-grid">
+                <div class="input-group-wrapper" id="include-group">
+                    <h3 class="group-title">B (재직 포함)</h3>
+                    <div class="form-group">
+                        <label for="b1_months">B1 (2000.12.31.까지)</label>
+                        <input type="number" id="b1_months" value="28">
+                    </div>
+                    <div class="form-group">
+                        <label for="b2_months">B2 (2001.1.1.부터)</label>
+                        <input type="number" id="b2_months" value="0">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="b2_months">B2 (2001.1.1.부터)</label>
-                    <input type="number" id="b2_months" value="0">
+                <div class="input-group-wrapper" id="exclude-group">
+                    <h3 class="group-title">C (재직 제외)</h3>
+                    <div class="form-group">
+                        <label for="c1_months">C1 (2000.12.31.까지)</label>
+                        <input type="number" id="c1_months" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="c2_months">C2 (2001.1.1.부터)</label>
+                        <input type="number" id="c2_months" value="0">
+                    </div>
                 </div>
             </div>
-
-            <div class="input-group-wrapper" id="exclude-group">
-                <h3 class="group-title">C (재직 제외)</h3>
-                <div class="form-group">
-                    <label for="c1_months">C1 (2000.12.31.까지)</label>
-                    <input type="number" id="c1_months" value="0">
-                </div>
-                <div class="form-group">
-                    <label for="c2_months">C2 (2001.1.1.부터)</label>
-                    <input type="number" id="c2_months" value="0">
-                </div>
-            </div>
-
+        </div>
+        
+        <!-- 1996.1.1 이후 발령자용 입력 (Modern) -->
+        <div id="modern-inputs" style="display: none;">
+            <!-- 생년월일이 있으므로 별도 입력 불필요, 자동 계산됨 -->
+            <p style="text-align:center; color:#666;">
+                1996.1.1. 이후 임용자는 입력하신 <strong>생년월일</strong>과 <strong>발령일</strong>을 기준으로<br>
+                정년 퇴직일을 산출하여 연금 개시 연령을 계산합니다.
+            </p>
         </div>
         
         <button onclick="calculatePensionDate()" class="full-width">계산하기</button>
 
         <div id="result-container">
             <h2>계산 결과</h2>
-            
+            <!-- 1. 최종 결과 (연금 시점) -->
             <p id="finalResult" class="final-result" style="display:none;"></p>
             
+            <!-- [NEW] 2. 정년 비교 정보 -->
+            <div id="retirement-info" class="retirement-info" style="display:none;"></div>
+
+            <!-- 3. 공식 설명 -->
             <div id="formula-explanation" class="calculation-box"></div>
-            
+            <!-- 4. 상세 과정 -->
             <div id="detailed-steps" class="calculation-box"></div>
         </div>
-        </div>
+    </div>
 
     <div class="footer">
         @작성자: LeeJaeKyun 2025.10.27.
     </div>
 
     <script>
+        const CUTOFF_DATE = new Date('1996-01-01');
+
+        function checkCalculatorMode() {
+            const d_date_str = document.getElementById('startDate').value;
+            if (!d_date_str) return;
+            const hireDate = new Date(d_date_str);
+
+            if (hireDate < CUTOFF_DATE) {
+                document.getElementById('subtitle-text').innerText = "1996.1.1. 이전 발령자 (x2 공식 적용)";
+                document.getElementById('legacy-inputs').style.display = 'block';
+                document.getElementById('modern-inputs').style.display = 'none';
+            } else {
+                document.getElementById('subtitle-text').innerText = "1996.1.1. 이후 발령자 (개정법 적용)";
+                document.getElementById('legacy-inputs').style.display = 'none';
+                document.getElementById('modern-inputs').style.display = 'block';
+            }
+            // 결과창 초기화
+            document.getElementById('finalResult').style.display = 'none';
+            document.getElementById('retirement-info').style.display = 'none';
+            document.getElementById('formula-explanation').style.display = 'none';
+            document.getElementById('detailed-steps').style.display = 'none';
+        }
+
+        // 교사 정년 퇴직일 계산 함수 (만 62세 학기말)
+        function calculateTeacherRetirementDate(birthDate) {
+            const birthYear = birthDate.getFullYear();
+            const birthMonth = birthDate.getMonth() + 1; // 1-12
+            
+            // 만 62세가 되는 해
+            const year62 = birthYear + 62;
+            
+            // 교육공무원법 정년 규정: 
+            // 3월~8월생 -> 8월 31일 퇴직
+            // 9월~2월생 -> 다음해 2월 28일(29일) 퇴직
+            // *단, 실제 적용은 학기 단위이므로 보통 생일이 속한 학기의 말일입니다.
+            // 상반기(1월~6월) 출생 -> 8월 31일 퇴직
+            // 하반기(7월~12월) 출생 -> 다음해 2월 28일 퇴직
+            
+            let retirementDate;
+            if (birthMonth >= 1 && birthMonth <= 6) {
+                retirementDate = new Date(year62, 7, 31); // 8월 31일 (month is 0-indexed)
+            } else {
+                retirementDate = new Date(year62 + 1, 1, 28); // 다음해 2월 28일 (윤년 체크 약식)
+                // 윤년 체크 (2월 29일)
+                const isLeap = new Date(year62 + 1, 1, 29).getMonth() === 1;
+                if(isLeap) retirementDate = new Date(year62 + 1, 1, 29);
+            }
+            return retirementDate;
+        }
+
         function calculatePensionDate() {
+            const d_date_str = document.getElementById('startDate').value;
+            const birth_date_str = document.getElementById('birthDate').value;
+
+            if (!d_date_str || !birth_date_str) {
+                alert("발령일과 생년월일을 모두 입력해주세요.");
+                return;
+            }
+
+            const hireDate = new Date(d_date_str);
+            const birthDate = new Date(birth_date_str);
+
+            if (hireDate < CUTOFF_DATE) {
+                calculateLegacyPension(hireDate, birthDate);
+            } else {
+                calculateModernPension(hireDate, birthDate);
+            }
+        }
+
+        // 1. 1996.1.1 이전 (Legacy)
+        function calculateLegacyPension(hireDate, birthDate) {
             try {
-                // 1. 입력 값 가져오기
-                const d_date_str = document.getElementById('startDate').value;
                 const b1_months = parseInt(document.getElementById('b1_months').value) || 0;
                 const c1_months = parseInt(document.getElementById('c1_months').value) || 0;
                 const b2_months = parseInt(document.getElementById('b2_months').value) || 0;
                 const c2_months = parseInt(document.getElementById('c2_months').value) || 0;
-
-                if (!d_date_str) {
-                    alert("발령일을 입력해주세요.");
-                    return;
-                }
-
-                // 2. A 계산 (1단계): (2000.12.31 - D)
-                const d_date = new Date(d_date_str);
-                const d_year = d_date.getFullYear();
-                const d_month = d_date.getMonth();
-                const ref_year = 2000;
-                const ref_month = 11; // 12월
-                const diff_months = (ref_year - d_year) * 12 + (ref_month - d_month) + 1;
-
-                // 3. A (이전 개월수) 최종 계산
+                
+                // 공식 계산
+                const d_year = hireDate.getFullYear();
+                const d_month = hireDate.getMonth();
+                const diff_months = (2000 - d_year) * 12 + (11 - d_month) + 1;
                 const A_months = diff_months + b1_months - c1_months;
-
-                // 4. 추가할 총 개월 수 계산
-                const base_months = 240; // 20 * 12
+                const base_months = 240; 
                 const inner_calc = A_months + b2_months - c2_months;
                 const total_months_to_add = (base_months - inner_calc) * 2;
 
-                // 5. 최종 연금시점일 계산
                 const start_date = new Date('2001-01-01');
                 const final_date = new Date(start_date);
                 final_date.setMonth(start_date.getMonth() + total_months_to_add);
 
-                // 6. 결과 포맷팅
-                const final_year = final_date.getFullYear();
-                const final_month = final_date.getMonth() + 1;
-                const final_day = final_date.getDate();
-                const final_date_str = `${final_year}년 ${final_month}월 ${final_day}일`;
+                // 결과 문자열
+                const final_date_str = `${final_date.getFullYear()}년 ${final_date.getMonth() + 1}월 ${final_date.getDate()}일`;
                 
-                const years_to_add = Math.floor(total_months_to_add / 12);
-                const months_to_add = total_months_to_add % 12;
+                // 정년 계산 및 비교
+                const retirementDate = calculateTeacherRetirementDate(birthDate);
+                const retirementDateStr = `${retirementDate.getFullYear()}년 ${retirementDate.getMonth() + 1}월 ${retirementDate.getDate()}일`;
+                
+                let compareMsg = "";
+                let color = "";
+                if (final_date <= retirementDate) {
+                    compareMsg = "✅ 축하합니다! 정년퇴직 전에 연금 지급 요건을 충족하십니다.";
+                    color = "green";
+                } else {
+                    compareMsg = "⚠️ 주의: 계산된 시점이 정년퇴직일보다 늦습니다. (확인 필요)";
+                    color = "#d9534f";
+                }
 
-                // 7. 결과 표시 (최종 날짜)
-                document.getElementById('finalResult').innerText = `최종 연금시점일: ${final_date_str}`;
+                // 표시
+                document.getElementById('finalResult').innerText = `연금 시점일: ${final_date_str}`;
                 document.getElementById('finalResult').style.display = 'block';
 
-                // [수정] 8. 계산 과정 분리
-                
-                // 8-1. 계산 공식 설명
-                const formulaHtml = `
-                    <h3 style="margin-top:0; color:#005a9c;">■ 계산 공식 설명</h3>
-                    <p style="font-weight:bold;">1. A (이전 개월수) 계산</p>
-                    <p style="margin-left: 10px;">A = (2000.12.31. - D) + B1 - C1</p>
-                    <p style="font-weight:bold; margin-top:10px;">2. 연금시점일 계산</p>
-                    <p style="margin-left: 10px;">☆시점일 = 2001.1.1. + ((240) - (A + B2 - C2)) × 2 (개월)</p>
+                document.getElementById('retirement-info').innerHTML = `
+                    <strong>[교사 정년 퇴직일]</strong><br>
+                    ${retirementDateStr} (만 62세)<br><br>
+                    <span style="color:${color}; font-weight:bold;">${compareMsg}</span>
                 `;
-                document.getElementById('formula-explanation').innerHTML = formulaHtml;
+                document.getElementById('retirement-info').style.display = 'block';
+
+                // 상세 내용
+                document.getElementById('formula-explanation').innerHTML = `
+                    <h3 style="margin-top:0; color:#005a9c;">■ x2 공식 적용 결과</h3>
+                    <p>정년(만 62세)과 연금 시점일을 비교하였습니다.</p>
+                `;
                 document.getElementById('formula-explanation').style.display = 'block';
 
-                // 8-2. 상세 계산 과정
-                const detailedStepsHtml = `
-                    <h3 style="margin-top:0; color:#005a9c;">■ 상세 계산 과정</h3>
-                    <p><strong>(2000.12.31 - D):</strong><br>
-                    ${d_date_str} ~ 2000.12.31. = <strong>${diff_months}개월</strong></p>
-                    <p><strong>B1 (2000.12.31.까지 포함):</strong> ${b1_months}개월</p>
-                    <p><strong>C1 (2000.12.31.까지 제외):</strong> ${c1_months}개월</p>
-                    <p style="font-weight:bold; color: #005a9c;">A (이전 개월수) = ${diff_months} + ${b1_months} - ${c1_months} = <strong>${A_months}개월</strong></sppan></p>
-                    <hr>
-                    <p><strong>B2 (2001.1.1.부터 포함):</strong> ${b2_months}개월</p>
-                    <p><strong>C2 (2001.1.1.부터 제외):</strong> ${c2_months}개월</p>
-                    <hr>
-                    <p><strong>공식 대입:</strong> (240 - (A + B2 - C2)) × 2</p>
-                    <p><strong>계산:</strong> (240 - (${A_months} + ${b2_months} - ${c2_months})) × 2</p>
-                    <p><strong>계산:</strong> (240 - ${inner_calc}) × 2</p>
-                    <p><strong>총 추가 개월 수:</strong> ${base_months - inner_calc} × 2 = <strong>${total_months_to_add}개월</strong></p>
-                    <hr>
-                    <p><strong>최종 날짜 계산:</strong></p>
-                    <p>2001년 1월 1일 + ${total_months_to_add}개월 (${years_to_add}년 ${months_to_add}개월)</p>
-                    <p><strong>= ${final_date_str}</strong></p>
-                `;
-                document.getElementById('detailed-steps').innerHTML = detailedStepsHtml;
-                document.getElementById('detailed-steps').style.display = 'block';
+                document.getElementById('detailed-steps').style.display = 'none'; // x2 공식은 복잡해서 간단히 처리
 
             } catch (e) {
-                alert("계산 중 오류가 발생했습니다: " + e.message);
+                alert("오류 발생: " + e.message);
             }
         }
-        window.onload = calculatePensionDate;
+
+        // 2. 1996.1.1 이후 (Modern)
+        function calculateModernPension(hireDate, birthDate) {
+            try {
+                // 정년 퇴직일 먼저 계산
+                const retirementDate = calculateTeacherRetirementDate(birthDate);
+                const retirementYear = retirementDate.getFullYear();
+                
+                // 퇴직연도에 따른 개시 연령 판별
+                let startAge = 0;
+                if (retirementYear <= 2021) startAge = 60;
+                else if (retirementYear <= 2023) startAge = 61;
+                else if (retirementYear <= 2026) startAge = 62;
+                else if (retirementYear <= 2029) startAge = 63;
+                else if (retirementYear <= 2032) startAge = 64;
+                else startAge = 65;
+
+                // 연금 개시일 (생일 기준 해당 연도)
+                const pensionStartYear = birthDate.getFullYear() + startAge;
+                
+                // 공백 기간 계산
+                const gapYears = startAge - 62;
+                let gapMsg = "";
+                if (gapYears > 0) {
+                    gapMsg = `⚠️ 정년(62세) 퇴직 후 <strong>약 ${gapYears}년의 소득 공백</strong>이 발생합니다.`;
+                } else {
+                    gapMsg = "✅ 정년퇴직과 동시에(혹은 직후) 연금을 수령합니다.";
+                }
+
+                // 결과 표시
+                document.getElementById('finalResult').innerText = `연금 지급 개시: 만 ${startAge}세 (${pensionStartYear}년)`;
+                document.getElementById('finalResult').style.display = 'block';
+
+                document.getElementById('retirement-info').innerHTML = `
+                    <strong>[교사 정년 퇴직일]</strong><br>
+                    ${retirementDate.getFullYear()}년 ${retirementDate.getMonth() + 1}월 ${retirementDate.getDate()}일 (만 62세)<br><br>
+                    <span style="color:#d9534f;">${gapMsg}</span>
+                `;
+                document.getElementById('retirement-info').style.display = 'block';
+
+                document.getElementById('formula-explanation').innerHTML = `
+                    <h3 style="margin-top:0; color:#005a9c;">■ 개정법 적용 (소득 공백 확인)</h3>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li><strong>예상 퇴직연도:</strong> ${retirementYear}년</li>
+                        <li><strong>법정 개시 연령:</strong> 만 ${startAge}세</li>
+                        <li><strong>정년(62세)과의 차이:</strong> ${gapYears}년</li>
+                    </ul>
+                `;
+                document.getElementById('formula-explanation').style.display = 'block';
+                document.getElementById('detailed-steps').style.display = 'none';
+
+            } catch (e) {
+                alert("오류 발생: " + e.message);
+            }
+        }
+        
+        window.onload = () => {
+            checkCalculatorMode();
+        };
     </script>
 
 </body>
