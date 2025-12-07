@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>교사 연금 수령일 계산기 v10</title>
+    <title>교사 연금 수령일 계산기 v1.0</title>
     <style>
         body {
             font-family: 'Malgun Gothic', sans-serif;
@@ -35,7 +35,8 @@
             border: 1px solid #b3d7ff;
             border-radius: 8px;
             padding: 20px;
-            margin-bottom: 25px;
+            margin-top: 30px; /* 위쪽 여백 추가 (결과창과의 간격) */
+            margin-bottom: 0;
             font-size: 15px;
             line-height: 1.8;
         }
@@ -60,7 +61,7 @@
             margin: 10px 0;
         }
         
-        /* 2001년 기준일 설명 강조 박스 (NEW) */
+        /* 2001년 기준일 설명 강조 박스 */
         .why-split-box {
             background-color: #fff0f0;
             border: 1px solid #ffcccc;
@@ -118,37 +119,35 @@
         .calculation-box { background-color: #f9f9f9; border: 1px solid #ddd; padding: 20px; border-radius: 5px; margin-top: 20px; font-family: 'Consolas', 'Courier New', monospace; line-height: 1.8; font-size: 15px; display: none; }
         hr { border: 0; border-top: 1px dashed #ccc; margin: 15px 0; }
         .footer { text-align: center; font-size: 14px; color: #888; margin-top: 10px; }
+        
+        /* 블로그 링크 버튼 스타일 */
+        .blog-link-container {
+            text-align: center; 
+            margin-top: 30px; 
+            margin-bottom: 50px;
+        }
+        .blog-btn {
+            background-color: #F06C00; 
+            color: white; 
+            padding: 12px 25px; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            font-size: 16px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .blog-btn:hover {
+            background-color: #d65a00;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
 
-        <div class="general-explanation">
-            <h2>🏫 공무원연금법상 '연금시점일' 가이드</h2>
-            
-            <h3>1. 1996년 1월 1일 이전 임용자</h3>
-            <ul>
-                <li><strong>특징:</strong> 정년(62세) 이전에 연금 지급 요건이 충족되는지 확인 (x2 공식 적용)</li>
-            </ul>
-            
-            <!-- [NEW] 2001년 분할 이유 설명 추가 -->
-            <div class="why-split-box">
-                <span class="why-split-title">❓ 왜 2000년과 2001년을 나누어 입력하나요?</span>
-                <p style="margin:0;">
-                    2001년 연금법 개정 당시, <strong>"2000년 12월 31일 기준으로 20년(240개월)을 못 채운 기간만큼, 2001년부터 2배로 더 근무해야 한다"</strong>는 규칙이 생겼습니다.<br><br>
-                    따라서 <strong>2000.12.31.까지 근무한 기간(B1)</strong>이 많을수록, 2배로 갚아야 할 기간이 줄어들기 때문에 시점을 나누어 계산해야 합니다.
-                </p>
-            </div>
-
-            <h3>2. 1996년 1월 1일 이후 임용자</h3>
-            <ul>
-                <li><strong>특징:</strong> 정년(62세) 퇴직 후 '소득 공백' 발생 여부 확인</li>
-                <li><strong>적용:</strong> 퇴직연도에 따라 만 60~65세 개시</li>
-            </ul>
-        </div>
-
-        <h1>교사 연금 수령일 계산기 V1.0 </h1>
+        <h1>교사 연금 수령일 계산기 v1.0</h1>
         <p class="subtitle" id="subtitle-text">1996.1.1. 이전 발령자</p>
 
         <div id="common-inputs">
@@ -207,26 +206,45 @@
             <div id="formula-explanation" class="calculation-box"></div>
             <div id="detailed-steps" class="calculation-box"></div>
         </div>
+
+        <!-- [이동됨] 공무원연금법 설명 섹션을 결과창 아래로 이동 -->
+        <div class="general-explanation">
+            <h2>🏫 공무원연금법상 '연금시점일' 가이드</h2>
+            
+            <h3>1. 1996년 1월 1일 이전 임용자</h3>
+            <ul>
+                <li><strong>특징:</strong> 정년(62세) 이전에 연금 지급 요건이 충족되는지 확인 (x2 공식 적용)</li>
+            </ul>
+            
+            <div class="why-split-box">
+                <span class="why-split-title">❓ 왜 2000년과 2001년을 나누어 입력하나요?</span>
+                <p style="margin:0;">
+                    2001년 연금법 개정 당시, <strong>"2000년 12월 31일 기준으로 20년(240개월)을 못 채운 기간만큼, 2001년부터 2배로 더 근무해야 한다"</strong>는 규칙이 생겼습니다.<br><br>
+                    따라서 <strong>2000.12.31.까지 근무한 기간(B1)</strong>이 많을수록, 2배로 갚아야 할 기간이 줄어들기 때문에 시점을 나누어 계산해야 합니다.
+                </p>
+            </div>
+
+            <h3>2. 1996년 1월 1일 이후 임용자</h3>
+            <ul>
+                <li><strong>특징:</strong> 정년(62세) 퇴직 후 '소득 공백' 발생 여부 확인</li>
+                <li><strong>적용:</strong> 퇴직연도에 따라 만 60~65세 개시</li>
+            </ul>
+        </div>
     </div>
 
     <div class="footer">
         @작성자: 인포픽랩 2025.10.27.
     </div>
 
-<div style="text-align: center; margin-top: 30px; margin-bottom: 50px;">
-    <p style="font-size: 14px; color: #666; margin-bottom: 10px;">
-        더 많은 연금 정보와 은퇴 준비 팁이 궁금하다면?
-    </p>
-    <a href="https://jktv2025.tistory.com" target="_blank" 
-       style="background-color: #F06C00; color: white; padding: 12px 25px; 
-              text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; 
-              box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: 0.3s;">
-       🏠 주인장 블로그 놀러가기
-    </a>
-</div>
+    <div class="blog-link-container">
+        <p style="font-size: 14px; color: #666; margin-bottom: 10px;">
+            더 많은 연금 정보와 은퇴 준비 팁이 궁금하다면?
+        </p>
+        <a href="https://jktv2025.tistory.com" target="_blank" class="blog-btn">
+            🏠 주인장 블로그 놀러가기
+        </a>
+    </div>
 
-
-    
     <script>
         const CUTOFF_DATE = new Date('1996-01-01');
 
@@ -397,4 +415,3 @@
 
 </body>
 </html>
-
